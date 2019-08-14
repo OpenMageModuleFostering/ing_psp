@@ -13,7 +13,7 @@
  * @category    ING
  * @package     ING_PSP
  * @author      Ginger Payments B.V. (info@gingerpayments.com)
- * @version     v1.1.7
+ * @version     v1.1.8
  * @copyright   COPYRIGHT (C) 2017 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
  * @license     The MIT License (MIT)
  *
@@ -128,7 +128,7 @@ class ING_PSP_Model_Observer
                 return $ingAPI->getAllowedProducts();
             }
         } catch (\Exception $exception) {
-            Mage::log($exception);
+            Mage::log($exception->getMessage());
             Mage::getSingleton('core/session')->addError($exception->getMessage());
         }
     }

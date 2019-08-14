@@ -13,7 +13,7 @@
  * @category    ING
  * @package     ING_PSP
  * @author      Ginger Payments B.V. (info@gingerpayments.com)
- * @version     v1.1.7
+ * @version     v1.1.8
  * @copyright   COPYRIGHT (C) 2017 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
  * @license     The MIT License (MIT)
  *
@@ -85,8 +85,8 @@ class ING_PSP_Helper_Sofort extends Mage_Core_Helper_Abstract
                 $orderId,
                 $returnUrl,
                 null,
-                $customer,
-                null,
+                \GingerPayments\Payment\Common\ArrayFunctions::withoutNullValues($customer),
+                ['plugin' => ING_PSP_Helper_Data::getPluginVersion()],
                 $webhookUrl
             )->toArray();
         } catch (\Exception $exception) {

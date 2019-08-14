@@ -13,7 +13,7 @@
  * @category    ING
  * @package     ING_PSP
  * @author      Ginger Payments B.V. (info@gingerpayments.com)
- * @version     v1.1.7
+ * @version     v1.1.8
  * @copyright   COPYRIGHT (C) 2017 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
  * @license     The MIT License (MIT)
  *
@@ -83,5 +83,13 @@ class ING_PSP_Helper_Data extends Mage_Core_Helper_Abstract
     public static function getAmountInCents($amount)
     {
         return (int) (100 * round($amount, 2, PHP_ROUND_HALF_UP));
+    }
+
+    /**
+     * @return string
+     */
+    public static function getPluginVersion()
+    {
+        return sprintf('Magento v%s', (string) Mage::getConfig()->getNode()->modules->ING_PSP->version);
     }
 }

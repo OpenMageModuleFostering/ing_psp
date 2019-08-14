@@ -12,7 +12,7 @@
  * @category    ING
  * @package     ING_PSP
  * @author      Ginger Payments B.V. (info@gingerpayments.com)
- * @version     v1.1.7
+ * @version     v1.1.8
  * @copyright   COPYRIGHT (C) 2017 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
  * @license     The MIT License (MIT)
  *
@@ -31,7 +31,7 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <version>
-                            <label>v1.1.7</label>
+                            <label>v1.1.8</label>
                             <sort_order>1</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>

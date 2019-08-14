@@ -13,7 +13,7 @@
  * @category    ING
  * @package     ING_PSP
  * @author      Ginger Payments B.V. (info@gingerpayments.com)
- * @version     v1.1.7
+ * @version     v1.1.8
  * @copyright   COPYRIGHT (C) 2017 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
  * @license     The MIT License (MIT)
  *
@@ -220,11 +220,9 @@ class ING_PSP_BanktransferController extends Mage_Core_Controller_Front_Action
             'ip_address' => $this->_coreHttp->getRemoteAddr(),
             'forwarded_ip' => $this->getRequest()->getServer('HTTP_X_FORWARDED_FOR'),
             'gender' => $order->getCustomerGender() ? ('1' ? 'male' : ('2' ? 'female' : null)) : null,
-            // "male", "female", "other", null
-            'birth_date' => $order->getCustomerDob(),
-            // Date (ISO 8601 / RFC 3339)
-            'locale' => Mage::app()->getLocale()->getLocaleCode(),
-            // "^[a-zA-Z]{2}(_[a-zA-Z]{2})?$"
+            'birthdate' => $order->getCustomerDob() ? Mage::getModel('core/date')->date('Y-m-d',
+                strtotime($order->getCustomerDob())) : null,
+            'locale' => Mage::app()->getLocale()->getLocaleCode()
         );
     }
 }
