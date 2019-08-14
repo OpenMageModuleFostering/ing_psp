@@ -13,7 +13,7 @@
  * @category    ING
  * @package     ING_PSP
  * @author      Ginger Payments B.V. (info@gingerpayments.com)
- * @version     v1.1.8
+ * @version     v1.1.9
  * @copyright   COPYRIGHT (C) 2017 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
  * @license     The MIT License (MIT)
  *
@@ -65,7 +65,6 @@ class ING_PSP_Model_Observer
                 $ingModule->show_in_website = 1;
                 $ingModule->show_in_store = 1;
                 $ingModule->active = 1;
-                Mage::getConfig()->saveConfig('payment/'.$product.'/active', 1);
             } else {
                 $ingModule->show_in_default = 0;
                 $ingModule->show_in_website = 0;
@@ -140,6 +139,10 @@ class ING_PSP_Model_Observer
      */
     protected function ipAllowed()
     {
+        if (!Mage::getStoreConfig('payment/ingpsp_klarna/active')) {
+            return false;
+        }
+
         $ipFilterList = Mage::getStoreConfig("payment/ingpsp_klarna/ip_filter");
 
         if (strlen($ipFilterList) > 0) {
