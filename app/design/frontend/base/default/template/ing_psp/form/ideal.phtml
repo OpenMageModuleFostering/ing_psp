@@ -1,0 +1,38 @@
+<?php
+/**
+ *   ╲          ╱
+ * ╭──────────────╮  COPYRIGHT (C) 2016 GINGER PAYMENTS B.V.
+ * │╭──╮      ╭──╮│
+ * ││//│      │//││
+ * │╰──╯      ╰──╯│
+ * ╰──────────────╯
+ *   ╭──────────╮    The MIT License (MIT)
+ *   │ () () () │
+ *
+ * @category    ING
+ * @package     ING_PSP
+ * @author      Ginger B.V. (info@gingerpayments.com)
+ * @version     v1.1.1
+ * @copyright   COPYRIGHT (C) 2016 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
+ * @license     The MIT License (MIT)
+ *
+ **/
+?>
+<?php
+    $_code    = $this->getMethodCode();
+    $_issuers = Mage::helper('ingpsp/ideal')->getIssuers();
+?>
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <li>
+        <label for="<?php echo $_code ?>_issuer_id" class="required"><em>*</em><?php echo $this->__('Choose your bank:') ?></label>
+        <span class="input-box">
+            <select name="issuer_id" class="required-entry input-text" id="<?php echo $_code; ?>_issuer_id" title="<?php echo $_code ?>_issuer_id">
+                <?php foreach ($_issuers as $issuer): ?>
+                    <?php if (isset($issuer['id']) && isset($issuer['id'])): ?>
+                    <option value="<?php echo $issuer['id'] ?>"><?php echo $issuer['name'] ?></option>
+                    <?php endif ?>
+                <?php endforeach ?>
+            </select>
+        </span>
+    </li>
+</ul>

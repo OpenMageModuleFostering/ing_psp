@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/ING_PSP",
+    "type": "magento-module",
+    "license": "The-MIT-License-(MIT)",
+    "homepage": "",
+    "description": "The ING register for your web shop to be used with KassaCompleet, ING Checkout or ING ePay.",
+    "authors": [
+    {
+        "name": "ING",
+        "email": "info@ing.nl"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

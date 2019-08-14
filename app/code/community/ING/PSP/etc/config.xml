@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<!--
+ *   ╲          ╱
+ * ╭──────────────╮  COPYRIGHT (C) 2016 GINGER PAYMENTS B.V.
+ * │╭──╮      ╭──╮│
+ * ││//│      │//││
+ * │╰──╯      ╰──╯│
+ * ╰──────────────╯
+ *   ╭──────────╮    The MIT License (MIT)
+ *   │ () () () │
+ *
+ * @category    ING
+ * @package     ING_PSP
+ * @author      Ginger B.V. (info@gingerpayments.com)
+ * @version     v1.1.2
+ * @copyright   COPYRIGHT (C) 2016 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
+ * @license     The MIT License (MIT)
+-->
+<config>
+    <modules>
+        <ING_PSP>
+            <version>1.1.1</version>
+        </ING_PSP>
+    </modules>
+    <global>
+        <models>
+            <ingpsp>
+                <class>ING_PSP_Model</class>
+            </ingpsp>
+        </models>
+        <blocks>
+            <ingpsp>
+                <class>ING_PSP_Block</class>
+            </ingpsp>
+            <payment>
+                <class>ING_PSP_Block</class>
+                <class>Mage_Payment_Block</class>
+            </payment>
+        </blocks>
+        <helpers>
+            <ingpsp>
+                <class>ING_PSP_Helper</class>
+            </ingpsp>
+        </helpers>
+        <payment>
+            <groups>
+                <ingpsp>ingpsp</ingpsp>
+            </groups>
+        </payment>
+        <resources>
+            <ingpsp_setup>
+                <setup>
+                    <module>ING_PSP</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ingpsp_setup>
+            <ingpsp_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </ingpsp_write>
+            <ingpsp_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </ingpsp_read>
+        </resources>
+        <fieldsets>
+            <sales_convert_quote>
+                <ing_order_id>
+                    <to_order>*</to_order>
+                </ing_order_id>
+                <ing_banktransfer_reference>
+                    <to_order>*</to_order>
+                </ing_banktransfer_reference>
+                <ing_ideal_issuer_id>
+                    <to_order>*</to_order>
+                </ing_ideal_issuer_id>
+            </sales_convert_quote>
+            <sales_convert_order>
+                <ing_order_id>
+                    <to_quote>*</to_quote>
+                </ing_order_id>
+                <ing_banktransfer_reference>
+                    <to_quote>*</to_quote>
+                </ing_banktransfer_reference>
+                <ing_ideal_issuer_id>
+                    <to_quote>*</to_quote>
+                </ing_ideal_issuer_id>
+            </sales_convert_order>
+        </fieldsets>
+    </global>
+    <frontend>
+        <routers>
+            <ingpsp>
+                <use>standard</use>
+                <args>
+                    <module>ING_PSP</module>
+                    <frontName>ingpsp</frontName>
+                </args>
+            </ingpsp>
+        </routers>
+        <layout>
+            <updates>
+                <ingpsp>
+                    <file>ing_psp.xml</file>
+                </ingpsp>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <ING_PSP>
+                    <files>
+                        <default>ING_PSP.csv</default>
+                    </files>
+                </ING_PSP>
+            </modules>
+        </translate>
+
+        <events>
+            <sales_convert_quote_payment_to_order_payment>
+                <observers>
+                    <ingpsp_observer>
+                        <type>singleton</type>
+                        <class>ingpsp/observer</class>
+                        <method>convertPayment</method>
+                    </ingpsp_observer>
+                </observers>
+            </sales_convert_quote_payment_to_order_payment>
+
+            <payment_method_is_active>
+                <observers>
+                    <paymentfilter_payment_method_is_active>
+                        <type>singleton</type>
+                        <class>ingpsp/observer</class>
+                        <method>paymentMethodIsActive</method>
+                    </paymentfilter_payment_method_is_active>
+                </observers>
+            </payment_method_is_active>
+
+        </events>
+    </frontend>
+    <adminhtml>
+        <events>
+
+            <adminhtml_init_system_config>
+                <observers>
+                    <ingpsp_observer>
+                        <type>singleton</type>
+                        <class>ingpsp/observer</class>
+                        <method>checkPaymentMethodStatus</method>
+                    </ingpsp_observer>
+                </observers>
+            </adminhtml_init_system_config>
+
+        </events>
+        <layout>
+            <updates>
+                <ingpsp>
+                    <file>ing_psp.xml</file>
+                </ingpsp>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <ING_PSP>
+                    <files>
+                        <default>ING_PSP.csv</default>
+                    </files>
+                </ING_PSP>
+            </modules>
+        </translate>
+    </adminhtml>
+    <default>
+        <payment>
+            <ingpsp_ideal>
+                <group>ingpsp</group>
+                <active>1</active>
+                <title>iDEAL</title>
+                <description>iDEAL</description>
+                <model>ingpsp/ideal</model>
+                <title>iDEAL</title>
+                <currency>EUR</currency>
+                <allowspecific>1</allowspecific>
+                <specificcountry>NL</specificcountry>
+                <sort_order>101</sort_order>
+            </ingpsp_ideal>
+            <ingpsp_banktransfer>
+                <group>ingpsp</group>
+                <active>1</active>
+                <title>Overboeking</title>
+                <description>Overboeking</description>
+                <model>ingpsp/banktransfer</model>
+                <title>Overboeking</title>
+                <currency>EUR</currency>
+                <allowspecific>1</allowspecific>
+                <specificcountry>NL</specificcountry>
+                <sort_order>102</sort_order>
+                <account_details>
+                    <iban>NL13INGB0005300060</iban>
+                    <bic>INGBNL2A</bic>
+                    <holder>ING Bank N.V. PSP</holder>
+                    <city>Amsterdam, NL</city>
+                </account_details>
+            </ingpsp_banktransfer>
+            <ingpsp_creditcard>
+                <group>ingpsp</group>
+                <active>1</active>
+                <title>CreditCard</title>
+                <description>CreditCard</description>
+                <model>ingpsp/creditcard</model>
+                <title>CreditCard</title>
+                <currency>EUR</currency>
+                <allowspecific>1</allowspecific>
+                <specificcountry>NL</specificcountry>
+                <sort_order>103</sort_order>
+            </ingpsp_creditcard>
+            <ingpsp_cashondelivery>
+                <group>ingpsp</group>
+                <active>1</active>
+                <title>Rembours</title>
+                <description>Rembours</description>
+                <model>ingpsp/cashondelivery</model>
+                <title>Rembours</title>
+                <currency>EUR</currency>
+                <allowspecific>1</allowspecific>
+                <specificcountry>NL</specificcountry>
+                <sort_order>104</sort_order>
+            </ingpsp_cashondelivery>
+            <ingpsp_bancontact>
+                <group>ingpsp</group>
+                <active>1</active>
+                <title>Bancontact</title>
+                <description>Bancontact</description>
+                <model>ingpsp/bancontact</model>
+                <title>Bancontact</title>
+                <currency>EUR</currency>
+                <allowspecific>1</allowspecific>
+                <specificcountry>NL</specificcountry>
+                <sort_order>105</sort_order>
+            </ingpsp_bancontact>
+        </payment>
+    </default>
+</config>

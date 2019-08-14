@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+*   ╲          ╱
+* ╭──────────────╮  COPYRIGHT (C) 2016 GINGER PAYMENTS B.V.
+* │╭──╮      ╭──╮│
+* ││//│      │//││
+* │╰──╯      ╰──╯│
+* ╰──────────────╯
+*   ╭──────────╮    The MIT License (MIT)
+*   │ () () () │
+*
+* @category    ING
+* @package     ING_PSP
+* @author      Ginger B.V. (info@gingerpayments.com)
+* @version     v1.1.2
+* @copyright   COPYRIGHT (C) 2016 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
+* @license     The MIT License (MIT)
+-->
+<config>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <ingpsp>
+                                        <title>ING PSP Betaal Methode(s)</title>
+                                    </ingpsp>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

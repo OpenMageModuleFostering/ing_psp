@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *   ╲          ╱
+ * ╭──────────────╮  COPYRIGHT (C) 2016 GINGER PAYMENTS B.V.
+ * │╭──╮      ╭──╮│
+ * ││//│      │//││
+ * │╰──╯      ╰──╯│
+ * ╰──────────────╯
+ *   ╭──────────╮    The MIT License (MIT)
+ *   │ () () () │
+ *
+ * @category    ING
+ * @package     ING_PSP
+ * @author      Ginger B.V. (info@gingerpayments.com)
+ * @version     v1.1.1
+ * @copyright   COPYRIGHT (C) 2016 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
+ * @license     The MIT License (MIT)
+ *
+ **/
+-->
+<layout version="0.1.0">
+    <checkout_onepage_success translate="label">
+        <reference name="checkout.success">
+            <action method="setTemplate"><template>ing_psp/success.phtml</template></action>
+        </reference>
+    </checkout_onepage_success>
+</layout>

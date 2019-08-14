@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+*   ╲          ╱
+* ╭──────────────╮  COPYRIGHT (C) 2016 GINGER PAYMENTS B.V.
+* │╭──╮      ╭──╮│
+* ││//│      │//││
+* │╰──╯      ╰──╯│
+* ╰──────────────╯
+*   ╭──────────╮    The MIT License (MIT)
+*   │ () () () │
+*
+*
+* @category    ING
+* @package     ING_PSP
+* @author      Ginger B.V. (info@gingerpayments.com)
+* @version     v1.1.2
+* @copyright   COPYRIGHT (C) 2016 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
+* @license     The MIT License (MIT)
+*
+**/
+-->
+<config>
+    <modules>
+        <ING_PSP>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Payment />
+                <Mage_Checkout />
+            </depends>
+            <version>1.1.2</version>
+        </ING_PSP>
+    </modules>
+    <global>
+        <models>
+            <ing_psp>
+                <class>ING_PSP_Model</class>
+            </ing_psp>
+        </models>
+    </global>
+</config>
