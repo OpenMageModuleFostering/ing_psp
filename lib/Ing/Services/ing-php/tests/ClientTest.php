@@ -109,7 +109,7 @@ final class ClientTest extends \PHPUnit_Framework_TestCase
                 'orders/',
                 m::on(
                     function (array $options) use ($order) {
-                        $this->assertEquals(3, $options['timeout']);
+                        $this->assertEquals(30, $options['timeout']);
                         $this->assertEquals('application/json', $options['headers']['Content-Type']);
                         $this->assertEquals(
                             ArrayFunctions::withoutNullValues($order->toArray()),
@@ -162,7 +162,7 @@ final class ClientTest extends \PHPUnit_Framework_TestCase
                 'orders/',
                 m::on(
                     function (array $options) use ($order) {
-                        $this->assertEquals(3, $options['timeout']);
+                        $this->assertEquals(30, $options['timeout']);
                         $this->assertEquals('application/json', $options['headers']['Content-Type']);
                         $this->assertEquals(
                             ArrayFunctions::withoutNullValues($order->toArray()),

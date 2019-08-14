@@ -290,7 +290,10 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'phone_numbers' => ["0123456789"],
             'postal_code' => null,
             'housenumber' => null,
-            'locale' => null
+            'locale' => null,
+            'gender' => 'male',
+            'birthdate' => '1988-03-29',
+            'ip_address' => '128.0.0.1'
         ];
 
         $array = [
@@ -309,7 +312,8 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'status' => 'new',
             'customer' => $customer,
             'extra' => null,
-            'webhook_url' => 'http://www.example.com/webhook'
+            'webhook_url' => 'http://www.example.com/webhook',
+            'order_lines' => null
         ];
 
         $this->assertEquals(
@@ -354,7 +358,10 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'phone_numbers' => ["0123456789"],
             'postal_code' => "1043 NX",
             'housenumber' => "29",
-            'locale' => "en_US"
+            'locale' => "en_US",
+            'gender' => 'male',
+            'birthdate' => '1988-03-29',
+            'ip_address' => '128.0.0.1'
         ];
 
         $array = [
@@ -373,7 +380,8 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'status' => 'new',
             'customer' => $customer,
             'extra' => null,
-            'webhook_url' => 'http://www.example.com/webhook'
+            'webhook_url' => 'http://www.example.com/webhook',
+            'order_lines' => null
         ];
 
         $updatedOrder = [
@@ -392,7 +400,8 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'status' => 'new',
             'customer' => $customer,
             'extra' => null,
-            'webhook_url' => 'http://www.example.com/WEBHOOK'
+            'webhook_url' => 'http://www.example.com/WEBHOOK',
+            'order_lines' => null
         ];
 
 

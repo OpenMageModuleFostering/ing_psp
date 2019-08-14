@@ -10,7 +10,7 @@ final class Ginger
     /**
      * The library version.
      */
-    const CLIENT_VERSION = '1.2.4';
+    const CLIENT_VERSION = '1.2.8';
 
     /**
      * The API version.
@@ -48,7 +48,7 @@ final class Ginger
     {
         Guard::uuid(
             static::apiKeyToUuid($apiKey),
-            'Ginger API key is invalid: '.$apiKey
+            'ING API key is invalid: '.$apiKey
         );
 
         return new Client(

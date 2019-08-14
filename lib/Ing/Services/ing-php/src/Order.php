@@ -13,6 +13,7 @@ use GingerPayments\Payment\Order\Transactions;
 use GingerPayments\Payment\Order\Customer;
 use GingerPayments\Payment\Order\Extra;
 use Rhumsaa\Uuid\Uuid;
+use GingerPayments\Payment\Order\OrderLines;
 
 final class Order
 {
@@ -99,6 +100,11 @@ final class Order
      * @var Url|null
      */
     private $webhookUrl;
+
+    /**
+     * @var OrderLines|null
+     */
+    private $orderLines;
 
     /**
      * Create a new Order with the iDEAL payment method.
@@ -353,6 +359,133 @@ final class Order
     }
 
     /**
+     * @param integer $amount Amount in cents.
+     * @param string $currency A valid currency code.
+     * @param string $description A description of the order.
+     * @param string $merchantOrderId A merchant-defined order identifier.
+     * @param string $returnUrl The return URL.
+     * @param string $expirationPeriod The expiration period as an ISO 8601 duration.
+     * @param array $customer Customer information
+     * @param array $extra Extra information.
+     * @param string $webhookUrl The webhook URL.
+     *
+     * @return Order
+     */
+    public static function createWithKlarna(
+        $amount,
+        $currency,
+        $description = null,
+        $merchantOrderId = null,
+        $returnUrl = null,
+        $expirationPeriod = null,
+        $customer = null,
+        $extra = null,
+        $webhookUrl = null,
+        $orderLines = null
+    ) {
+        return static::create(
+            $amount,
+            $currency,
+            PaymentMethod::KLARNA,
+            [],
+            $description,
+            $merchantOrderId,
+            $returnUrl,
+            $expirationPeriod,
+            $customer,
+            $extra,
+            $webhookUrl,
+            $orderLines
+        );
+    }
+
+    /**
+     * Create a new Order with the Paypal payment method.
+     *
+     * @param integer $amount Amount in cents.
+     * @param string $currency A valid currency code.
+     * @param array $paymentMethodDetails An array of extra payment method details.
+     * @param string $description A description of the order.
+     * @param string $merchantOrderId A merchant-defined order identifier.
+     * @param string $returnUrl The return URL.
+     * @param string $expirationPeriod The expiration period as an ISO 8601 duration.
+     * @param array $customer Customer information.
+     * @param array $extra Extra information.
+     * @param string $webhookUrl The webhook URL.
+     *
+     * @return Order
+     */
+    public static function createWithPaypal(
+        $amount,
+        $currency,
+        array $paymentMethodDetails = [],
+        $description = null,
+        $merchantOrderId = null,
+        $returnUrl = null,
+        $expirationPeriod = null,
+        $customer = null,
+        $extra = null,
+        $webhookUrl = null
+    ) {
+        return static::create(
+            $amount,
+            $currency,
+            PaymentMethod::PAYPAL,
+            $paymentMethodDetails,
+            $description,
+            $merchantOrderId,
+            $returnUrl,
+            $expirationPeriod,
+            $customer,
+            $extra,
+            $webhookUrl
+        );
+    }
+
+    /**
+     * Create a new Order with the HomePay payment method.
+     *
+     * @param integer $amount Amount in cents.
+     * @param string $currency A valid currency code.
+     * @param array $paymentMethodDetails An array of extra payment method details.
+     * @param string $description A description of the order.
+     * @param string $merchantOrderId A merchant-defined order identifier.
+     * @param string $returnUrl The return URL.
+     * @param string $expirationPeriod The expiration period as an ISO 8601 duration.
+     * @param array $customer Customer information.
+     * @param array $extra Extra information.
+     * @param string $webhookUrl The webhook URL.
+     *
+     * @return Order
+     */
+    public static function createWithHomepay(
+        $amount,
+        $currency,
+        array $paymentMethodDetails = [],
+        $description = null,
+        $merchantOrderId = null,
+        $returnUrl = null,
+        $expirationPeriod = null,
+        $customer = null,
+        $extra = null,
+        $webhookUrl = null
+    ) {
+        return static::create(
+            $amount,
+            $currency,
+            PaymentMethod::HOMEPAY,
+            $paymentMethodDetails,
+            $description,
+            $merchantOrderId,
+            $returnUrl,
+            $expirationPeriod,
+            $customer,
+            $extra,
+            $webhookUrl
+        );
+    }
+
+    /**
      * Create a new Order.
      *
      * @param integer $amount Amount in cents.
@@ -366,6 +499,7 @@ final class Order
      * @param array $customer Customer information.
      * @param array $extra Extra information.
      * @param string $webhookUrl The webhook URL.
+     * @param array $orderLines Order lines.
      *
      * @return Order
      */
@@ -380,7 +514,8 @@ final class Order
         $expirationPeriod = null,
         $customer = null,
         $extra = null,
-        $webhookUrl = null
+        $webhookUrl = null,
+        $orderLines = null
     ) {
         return new static(
             Transactions::fromArray(
@@ -405,7 +540,8 @@ final class Order
             null,
             ($customer !== null) ? Customer::fromArray($customer) : null,
             ($extra !== null) ? Extra::fromArray($extra) : null,
-            ($webhookUrl !== null) ? Url::fromString($webhookUrl) : null
+            ($webhookUrl !== null) ? Url::fromString($webhookUrl) : null,
+            ($orderLines !== null) ? OrderLines::fromArray($orderLines) : null
         );
     }
 
@@ -439,7 +575,9 @@ final class Order
                 ? Customer::fromArray($order['customer']) : null,
             array_key_exists('extra', $order) && $order['extra'] !== null
                 ? Extra::fromArray($order['extra']) : null,
-            array_key_exists('webhook_url', $order) ? Url::fromString($order['webhook_url']) : null
+            array_key_exists('webhook_url', $order) ? Url::fromString($order['webhook_url']) : null,
+            array_key_exists('order_lines', $order) && $order['order_lines'] !== null
+                ? OrderLines::fromArray($order['order_lines']) : null
         );
     }
 
@@ -464,7 +602,8 @@ final class Order
             'return_url' => $this->getReturnUrl(),
             'customer' => $this->getCustomer(),
             'extra' => $this->getExtra(),
-            'webhook_url' => $this->getWebhookUrl()
+            'webhook_url' => $this->getWebhookUrl(),
+            'order_lines' => $this->getOrderLines()
         ];
     }
 
@@ -598,6 +737,14 @@ final class Order
     public function getExtra()
     {
         return ($this->extra() !== null) ? $this->extra()->toArray() : null;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getOrderLines()
+    {
+        return ($this->orderLines() !== null) ? $this->orderLines()->toArray() : null;
     }
 
     /**
@@ -749,6 +896,14 @@ final class Order
     }
 
     /**
+     * @return OrderLines|null
+     */
+    public function orderLines()
+    {
+        return $this->orderLines;
+    }
+
+    /**
      * @return Transactions
      */
     public function transactions()
@@ -773,22 +928,25 @@ final class Order
     }
 
     /**
+     * Order constructor.
+     *
      * @param Transactions $transactions
      * @param Amount $amount
      * @param Currency $currency
-     * @param Description $description
-     * @param MerchantOrderId $merchantOrderId
-     * @param Url $returnUrl
-     * @param \DateInterval $expirationPeriod
-     * @param Uuid $id
-     * @param Uuid $projectId
-     * @param Carbon $created
-     * @param Carbon $modified
-     * @param Carbon $completed
-     * @param Status $status
-     * @param Customer $customer
-     * @param Extra $extra
-     * @param Url $webhookUrl
+     * @param Description|null $description
+     * @param MerchantOrderId|null $merchantOrderId
+     * @param Url|null $returnUrl
+     * @param \DateInterval|null $expirationPeriod
+     * @param Uuid|null $id
+     * @param Uuid|null $projectId
+     * @param Carbon|null $created
+     * @param Carbon|null $modified
+     * @param Carbon|null $completed
+     * @param Status|null $status
+     * @param Customer|null $customer
+     * @param Extra|null $extra
+     * @param Url|null $webhookUrl
+     * @param OrderLines|null $orderLines
      */
     private function __construct(
         Transactions $transactions,
@@ -806,7 +964,8 @@ final class Order
         Status $status = null,
         Customer $customer = null,
         Extra $extra = null,
-        Url $webhookUrl = null
+        Url $webhookUrl = null,
+        OrderLines $orderLines = null
     ) {
         $this->transactions = $transactions;
         $this->amount = $amount;
@@ -824,5 +983,6 @@ final class Order
         $this->customer = $customer;
         $this->extra = $extra;
         $this->webhookUrl = $webhookUrl;
+        $this->orderLines = $orderLines;
     }
 }

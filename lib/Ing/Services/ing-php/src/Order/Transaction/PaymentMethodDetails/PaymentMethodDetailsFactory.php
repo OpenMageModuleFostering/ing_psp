@@ -32,6 +32,18 @@ final class PaymentMethodDetailsFactory
             return CashOnDeliveryPaymentMethodDetails::fromArray($paymentMethodDetails);
         }
 
+        if ($paymentMethod->isKlarna()) {
+            return KlarnaPaymentMethodDetails::fromArray($paymentMethodDetails);
+        }
+
+        if ($paymentMethod->isPayPal()) {
+            return PayPalPaymentMethodDetails::fromArray($paymentMethodDetails);
+        }
+
+        if ($paymentMethod->isHomePay()) {
+            return HomePayPaymentMethodDetails::fromArray($paymentMethodDetails);
+        }
+
         throw new \InvalidArgumentException('Provided payment method not supported.');
     }
 }

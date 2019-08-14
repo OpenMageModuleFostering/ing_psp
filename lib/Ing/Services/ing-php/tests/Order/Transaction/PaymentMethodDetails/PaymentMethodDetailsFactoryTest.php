@@ -66,6 +66,20 @@ final class PaymentMethodDetailsFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function itShouldCreateAPayPalPaymentMethodDetails()
+    {
+        $this->assertInstanceOf(
+            'GingerPayments\Payment\Order\Transaction\PaymentMethodDetails\PayPalPaymentMethodDetails',
+            PaymentMethodDetailsFactory::createFromArray(
+                PaymentMethod::fromString(PaymentMethod::PAYPAL),
+                []
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
     public function itShouldFailWhenAnUnsupportedPaymentMethodIsProvided()
     {
         $paymentMethod = PaymentMethod::fromString(PaymentMethod::IDEAL);

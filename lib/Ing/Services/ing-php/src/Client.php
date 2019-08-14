@@ -88,17 +88,16 @@ final class Client
             return $result;
         }
 
-        if (array_key_exists('status', $details)
-            && $details['status'] == 'active-testing') {
-            return array('ideal');
-        }
-
         $products_to_check = array(
             'ideal' => 'ideal',
             'bank-transfer' => 'banktransfer',
             'bancontact' => 'bancontact',
             'cash-on-delivery' => 'cashondelivery',
             'credit-card' => 'creditcard',
+            'paypal' => 'paypal',
+            'homepay' => 'homepay',
+            'klarna' => 'klarna',
+            'sofort' => 'sofort'
         );
 
         foreach ($products_to_check as $permission_id => $id) {
@@ -402,6 +401,136 @@ final class Client
     }
 
     /**
+     * Create a new Klarna order.
+     *
+     * @param integer $amount            Amount in cents.
+     * @param string  $currency          A valid currency code.
+     * @param string  $description       A description of the order.
+     * @param string  $merchantOrderId   A merchant-defined order identifier.
+     * @param string  $returnUrl         The return URL.
+     * @param string  $expirationPeriod  The expiration period as an ISO 8601 duration
+     * @param array   $customer          Customer information.
+     * @param array   $extra             Extra information.
+     * @param string  $webhookUrl        The webhook URL.
+     * @param array   $orderLines        Order lines
+     *
+     * @return Order The newly created order.
+     */
+    public function createKlarnaOrder(
+        $amount,
+        $currency,
+        $description = null,
+        $merchantOrderId = null,
+        $returnUrl = null,
+        $expirationPeriod = null,
+        $customer = null,
+        $extra = null,
+        $webhookUrl = null,
+        $orderLines = null
+    ) {
+        return $this->postOrder(
+            Order::createWithKlarna(
+                $amount,
+                $currency,
+                $description,
+                $merchantOrderId,
+                $returnUrl,
+                $expirationPeriod,
+                $customer,
+                $extra,
+                $webhookUrl,
+                $orderLines
+            )
+        );
+    }
+
+    /**
+     * Create a new PayPal order.
+     *
+     * @param integer $amount Amount in cents.
+     * @param string $currency A valid currency code.
+     * @param array $paymentMethodDetails An array of extra payment method details.
+     * @param string $description A description of the order.
+     * @param string $merchantOrderId A merchant-defined order identifier.
+     * @param string $returnUrl The return URL.
+     * @param string $expirationPeriod The expiration period as an ISO 8601 duration
+     * @param array $customer Customer information.
+     * @param array $extra Extra information.
+     *
+     * @return Order The newly created order.
+     */
+    public function createPaypalOrder(
+        $amount,
+        $currency,
+        array $paymentMethodDetails = [],
+        $description = null,
+        $merchantOrderId = null,
+        $returnUrl = null,
+        $expirationPeriod = null,
+        $customer = null,
+        $extra = null,
+        $webhookUrl = null
+    ) {
+        return $this->postOrder(
+            Order::createWithPaypal(
+                $amount,
+                $currency,
+                $paymentMethodDetails,
+                $description,
+                $merchantOrderId,
+                $returnUrl,
+                $expirationPeriod,
+                $customer,
+                $extra,
+                $webhookUrl
+            )
+        );
+    }
+
+    /**
+     * Create a new Home'Pay order.
+     *
+     * @param integer $amount Amount in cents.
+     * @param string $currency A valid currency code.
+     * @param array $paymentMethodDetails An array of extra payment method details.
+     * @param string $description A description of the order.
+     * @param string $merchantOrderId A merchant-defined order identifier.
+     * @param string $returnUrl The return URL.
+     * @param string $expirationPeriod The expiration period as an ISO 8601 duration
+     * @param array $customer Customer information.
+     * @param array $extra Extra information.
+     *
+     * @return Order The newly created order.
+     */
+    public function createHomepayOrder(
+        $amount,
+        $currency,
+        array $paymentMethodDetails = [],
+        $description = null,
+        $merchantOrderId = null,
+        $returnUrl = null,
+        $expirationPeriod = null,
+        $customer = null,
+        $extra = null,
+        $webhookUrl = null
+    ) {
+        return $this->postOrder(
+            Order::createWithHomepay(
+                $amount,
+                $currency,
+                $paymentMethodDetails,
+                $description,
+                $merchantOrderId,
+                $returnUrl,
+                $expirationPeriod,
+                $customer,
+                $extra,
+                $webhookUrl
+            )
+        );
+    }
+
+    /**
      * Create a new order.
      *
      * @param integer $amount Amount in cents.
@@ -495,7 +624,7 @@ final class Client
             $response = $this->httpClient->post(
                 'orders/',
                 [
-                    'timeout' => 3,
+                    'timeout' => 30,
                     'headers' => ['Content-Type' => 'application/json'],
                     'body' => json_encode(
                         ArrayFunctions::withoutNullValues($order->toArray())
@@ -525,7 +654,7 @@ final class Client
                 $this->httpClient->put(
                     "orders/".$order->id()."/",
                     [
-                        "timeout" => 3,
+                        "timeout" => 30,
                         "json" => ArrayFunctions::withoutNullValues($order->toArray())
                     ]
                 )->json()

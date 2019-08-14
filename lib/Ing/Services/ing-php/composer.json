@@ -1,13 +1,19 @@
 {
-    "name": "gingerpayments/ginger-php",
-    "description": "The official Ginger Payments PHP SDK",
+    "name": "ingpsp/ing-php",
+    "description": "The official ING-PSP PHP SDK",
     "keywords": ["payment", "pay", "merchant", "e-commerce"],
     "license": "MIT",
-    "homepage": "https://github.com/gingerpayments/ginger-php",
+    "homepage": "https://github.com/ingpsp/ing-php",
     "authors": [
         {
             "name": "Ginger Payments",
             "email": "dev@gingerpayments.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ingpsp/ing-php"
         }
     ],
     "require": {

@@ -22,7 +22,10 @@ final class CustomerTest extends \PHPUnit_Framework_TestCase
             'housenumber' => '29 A-12',
             'country' => 'NL',
             'phone_numbers' => [],
-            'locale' => null
+            'locale' => null,
+            'gender' => 'male',
+            'birthdate' => '1988-03-29',
+            'ip_address' => '128.0.0.1'
         ];
 
         $customer = Customer::fromArray($array);
@@ -42,6 +45,9 @@ final class CustomerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($array['housenumber'], (string) $customer->housenumber());
         $this->assertEquals($array['country'], (string) $customer->country());
         $this->assertEquals($array['phone_numbers'], $customer->phoneNumbers()->toArray());
+        $this->assertEquals($array['gender'], $customer->gender()->toString());
+        $this->assertEquals($array['birthdate'], $customer->birthdate()->toString());
+        $this->assertEquals($array['ip_address'], $customer->ip()->toString());
     }
 
     /**
@@ -60,7 +66,10 @@ final class CustomerTest extends \PHPUnit_Framework_TestCase
             'housenumber' => '29 A-12',
             'country' => 'NL',
             'phone_numbers' => [],
-            'locale' => null
+            'locale' => null,
+            'gender' => 'male',
+            'birthdate' => '1988-03-29',
+            'ip_address' => '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
         ];
 
         $this->assertEquals(
@@ -86,5 +95,7 @@ final class CustomerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($customer->housenumber());
         $this->assertNull($customer->country());
         $this->assertNull($customer->phoneNumbers());
+        $this->assertNull($customer->gender());
+        $this->assertNull($customer->birthdate());
     }
 }

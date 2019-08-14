@@ -2,7 +2,7 @@
 
 /**
  *   ╲          ╱
- * ╭──────────────╮  COPYRIGHT (C) 2016 GINGER PAYMENTS B.V.
+ * ╭──────────────╮  COPYRIGHT (C) 2017 GINGER PAYMENTS B.V.
  * │╭──╮      ╭──╮│
  * ││//│      │//││
  * │╰──╯      ╰──╯│
@@ -13,8 +13,8 @@
  * @category    ING
  * @package     ING_PSP
  * @author      Ginger Payments B.V. (info@gingerpayments.com)
- * @version     v1.1.3
- * @copyright   COPYRIGHT (C) 2016 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
+ * @version     v1.1.7
+ * @copyright   COPYRIGHT (C) 2017 GINGER PAYMENTS B.V. (https://www.gingerpayments.com)
  * @license     The MIT License (MIT)
  *
  **/
@@ -129,7 +129,6 @@ class ING_PSP_IdealController extends Mage_Core_Controller_Front_Action
                 $this->_redirectUrl($this->_ideal->getPaymentUrl());
             }
         } catch (Exception $e) {
-            die($e->getMessage());
             Mage::log($e);
             Mage::throwException(
                 "Could not start transaction. Contact the owner.<br />
